@@ -1,1 +1,1723 @@
-# fuxi2
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习、运动和生活计划 — Учёба, спорт и планы на жизнь</title>
+
+<style>
+:root {
+--primary: #4169a1;
+--primary-dark: #294c7b;
+--light-blue: #edf4fc;
+--light-green: #eaf7ee;
+--light-yellow: #fff6dc;
+--light-red: #fff0ee;
+--text: #243247;
+--muted: #68778a;
+--border: #dce5ef;
+--white: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+margin: 0;
+font-family: Arial, "Noto Sans SC", sans-serif;
+line-height: 1.65;
+color: var(--text);
+background: #f4f7fb;
+}
+
+header {
+padding: 36px 20px;
+color: white;
+text-align: center;
+background: linear-gradient(135deg, #294c7b, #5d8fbd);
+}
+
+header h1 {
+margin: 0 0 8px;
+font-size: clamp(26px, 5vw, 40px);
+}
+
+header p {
+margin: 5px 0;
+}
+
+.chinese-title {
+font-size: 1.2em;
+}
+
+nav {
+position: sticky;
+top: 0;
+z-index: 10;
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+gap: 7px;
+padding: 12px;
+background: white;
+border-bottom: 1px solid var(--border);
+box-shadow: 0 3px 10px #26384b0c;
+}
+
+nav a {
+display: inline-block;
+padding: 7px 12px;
+color: var(--primary-dark);
+text-decoration: none;
+background: var(--light-blue);
+border-radius: 20px;
+font-size: 14px;
+}
+
+nav a:hover { background: #dceafb; }
+
+main {
+width: min(1050px, 94%);
+margin: 24px auto 60px;
+}
+
+section {
+margin: 22px 0;
+padding: clamp(18px, 3vw, 28px);
+background: white;
+border: 1px solid var(--border);
+border-radius: 18px;
+box-shadow: 0 5px 18px #203b5808;
+scroll-margin-top: 100px;
+}
+
+h2 {
+margin-top: 0;
+color: var(--primary-dark);
+font-size: 25px;
+}
+
+h3 {
+margin-top: 25px;
+color: var(--primary-dark);
+}
+
+h4 { margin: 8px 0; }
+
+p { margin: 9px 0; }
+
+.small {
+color: var(--muted);
+font-size: 14px;
+}
+
+.card-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+gap: 14px;
+}
+
+.card {
+padding: 16px;
+background: #f9fbfe;
+border: 1px solid var(--border);
+border-radius: 12px;
+}
+
+.grammar-card {
+border-top: 4px solid #7098c7;
+}
+
+.chinese {
+font-size: 1.18em;
+font-weight: 600;
+color: #244d80;
+}
+
+.example {
+margin: 10px 0;
+padding: 10px 13px;
+background: var(--light-blue);
+border-radius: 8px;
+}
+
+.ru { color: #536174; }
+
+.task {
+margin: 18px 0;
+padding: 17px;
+border: 1px solid var(--border);
+border-radius: 12px;
+}
+
+.task h4 { font-size: 17px; }
+
+.question {
+margin: 14px 0;
+padding: 12px;
+background: #fafcff;
+border: 1px solid #e6edf5;
+border-radius: 9px;
+}
+
+.question p { margin-top: 0; }
+
+label.option {
+display: block;
+margin: 7px 0;
+padding: 8px 10px;
+border: 1px solid #e4eaf2;
+border-radius: 8px;
+cursor: pointer;
+}
+
+label.option:hover { background: var(--light-blue); }
+
+input[type="radio"],
+input[type="checkbox"] {
+margin-right: 7px;
+accent-color: var(--primary);
+}
+
+input[type="text"],
+textarea,
+select {
+width: 100%;
+max-width: 100%;
+padding: 10px 12px;
+margin: 5px 0;
+color: var(--text);
+font: inherit;
+background: white;
+border: 1px solid #cbd7e5;
+border-radius: 8px;
+}
+
+textarea {
+min-height: 105px;
+resize: vertical;
+}
+
+button {
+margin: 8px 6px 4px 0;
+padding: 10px 16px;
+color: white;
+font: inherit;
+font-weight: 600;
+background: var(--primary);
+border: 0;
+border-radius: 9px;
+cursor: pointer;
+}
+
+button:hover { background: var(--primary-dark); }
+
+button.secondary {
+color: var(--primary-dark);
+background: var(--light-blue);
+}
+
+.feedback {
+margin-top: 12px;
+padding: 10px 12px;
+border-radius: 8px;
+font-weight: 600;
+}
+
+.feedback:empty { display: none; }
+
+.feedback.success {
+color: #17653a;
+background: var(--light-green);
+}
+
+.feedback.error {
+color: #9a332b;
+background: var(--light-red);
+}
+
+.feedback.neutral {
+color: #75591b;
+background: var(--light-yellow);
+}
+
+.score {
+position: sticky;
+bottom: 10px;
+z-index: 5;
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 12px;
+margin-top: 20px;
+padding: 12px 16px;
+background: #ffffffed;
+border: 1px solid var(--border);
+border-radius: 12px;
+box-shadow: 0 4px 15px #203b581c;
+}
+
+.tag {
+display: inline-block;
+margin: 3px;
+padding: 4px 9px;
+color: #31577f;
+background: var(--light-blue);
+border-radius: 14px;
+font-size: 13px;
+}
+
+details {
+margin: 12px 0;
+padding: 12px;
+background: #f9fbfe;
+border: 1px solid var(--border);
+border-radius: 9px;
+}
+
+summary {
+cursor: pointer;
+font-weight: 600;
+color: var(--primary-dark);
+}
+
+.word-bank {
+margin: 10px 0;
+padding: 12px;
+background: var(--light-yellow);
+border-radius: 8px;
+}
+
+hr {
+margin: 25px 0;
+border: 0;
+border-top: 1px solid var(--border);
+}
+
+footer {
+padding: 25px;
+text-align: center;
+color: var(--muted);
+}
+
+@media (max-width: 600px) {
+header { padding: 27px 15px; }
+nav { position: static; }
+nav a { font-size: 13px; padding: 6px 9px; }
+main { width: 96%; margin-top: 12px; }
+section { padding: 16px; }
+.score { position: static; }
+button { max-width: 100%; }
+}
+
+@media print {
+nav, button, .score { display: none !important; }
+body { background: white; }
+section { box-shadow: none; break-inside: avoid; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>学习、运动和生活计划</h1>
+<p class="chinese-title">Учёба, спорт и планы на жизнь</p>
+<p>Повторение грамматики · Лексика · Чтение · Письмо · Говорение</p>
+</header>
+
+<nav>
+<a href="#warmup">Разминка</a>
+<a href="#vocab">Лексика</a>
+<a href="#grammar">Грамматика</a>
+<a href="#de">得</a>
+<a href="#yidian">一点儿也不</a>
+<a href="#redup">Повтор прилагательных</a>
+<a href="#review">Повторение</a>
+<a href="#translation">Перевод</a>
+<a href="#speaking">Говорение</a>
+<a href="#reading2">HSK 2</a>
+<a href="#reading3">HSK 3</a>
+<a href="#writing">Письмо</a>
+</nav>
+
+<main>
+
+<!-- 1. WARM-UP -->
+<section id="warmup">
+<h2>1. Разминка — 热身</h2>
+<p>Ответь на вопросы устно. Постарайся отвечать полными предложениями.</p>
+
+<div class="card-grid">
+<div class="card">
+<p class="chinese">你每天学习多长时间？</p>
+<p class="ru">Сколько времени ты занимаешься каждый день?</p>
+</div>
+<div class="card">
+<p class="chinese">你喜欢做什么运动？</p>
+<p class="ru">Каким спортом ты любишь заниматься?</p>
+</div>
+<div class="card">
+<p class="chinese">你觉得学习汉语难吗？</p>
+<p class="ru">Ты считаешь, что учить китайский трудно?</p>
+</div>
+<div class="card">
+<p class="chinese">你以后想做什么？</p>
+<p class="ru">Чем ты хочешь заниматься в будущем?</p>
+</div>
+</div>
+
+<div class="task">
+<h3>Задание 1. Выбери подходящий ответ</h3>
+<div class="question" data-correct="b">
+<p>1. 你每天几点起床？</p>
+<label class="option"><input type="radio" name="w1" value="a">我喜欢跑步。</label>
+<label class="option"><input type="radio" name="w1" value="b">我每天七点起床。</label>
+<label class="option"><input type="radio" name="w1" value="c">我觉得汉语很有意思。</label>
+</div>
+<div class="question" data-correct="a">
+<p>2. 你为什么学习汉语？</p>
+<label class="option"><input type="radio" name="w2" value="a">因为我喜欢中国文化。</label>
+<label class="option"><input type="radio" name="w2" value="b">我每天八点吃早饭。</label>
+<label class="option"><input type="radio" name="w2" value="c">我跑步跑得很快。</label>
+</div>
+<button onclick="checkRadioTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+</section>
+
+<!-- 2. VOCABULARY -->
+<section id="vocab">
+<h2>2. Лексика — 词汇</h2>
+<p>Повтори слова по теме учёбы, спорта, повседневной жизни и планов.</p>
+
+<div class="card-grid">
+<div class="card">
+<h3>学习与工作 — Учёба и работа</h3>
+<p><span class="chinese">学习</span> xuéxí — учиться</p>
+<p><span class="chinese">复习</span> fùxí — повторять материал</p>
+<p><span class="chinese">练习</span> liànxí — упражняться</p>
+<p><span class="chinese">考试</span> kǎoshì — экзамен</p>
+<p><span class="chinese">作业</span> zuòyè — домашнее задание</p>
+<p><span class="chinese">努力</span> nǔlì — стараться</p>
+<p><span class="chinese">进步</span> jìnbù — прогрессировать</p>
+</div>
+
+<div class="card">
+<h3>运动与健康 — Спорт и здоровье</h3>
+<p><span class="chinese">运动</span> yùndòng — спорт, заниматься спортом</p>
+<p><span class="chinese">跑步</span> pǎobù — бегать</p>
+<p><span class="chinese">游泳</span> yóuyǒng — плавать</p>
+<p><span class="chinese">打篮球</span> dǎ lánqiú — играть в баскетбол</p>
+<p><span class="chinese">散步</span> sànbù — гулять</p>
+<p><span class="chinese">身体</span> shēntǐ — тело, здоровье</p>
+<p><span class="chinese">健康</span> jiànkāng — здоровый, здоровье</p>
+</div>
+
+<div class="card">
+<h3>生活与计划 — Жизнь и планы</h3>
+<p><span class="chinese">计划</span> jìhuà — планировать, план</p>
+<p><span class="chinese">打算</span> dǎsuàn — собираться, планировать</p>
+<p><span class="chinese">每天</span> měitiān — каждый день</p>
+<p><span class="chinese">以前</span> yǐqián — раньше, до</p>
+<p><span class="chinese">以后</span> yǐhòu — потом, после</p>
+<p><span class="chinese">有时候</span> yǒu shíhou — иногда</p>
+<p><span class="chinese">终于</span> zhōngyú — наконец</p>
+</div>
+
+<div class="card">
+<h3>描述动作 — Описание действий</h3>
+<p><span class="chinese">快</span> kuài — быстрый, быстро</p>
+<p><span class="chinese">慢</span> màn — медленный, медленно</p>
+<p><span class="chinese">认真</span> rènzhēn — серьёзный, внимательно</p>
+<p><span class="chinese">清楚</span> qīngchu — ясный, понятно</p>
+<p><span class="chinese">容易</span> róngyì — лёгкий</p>
+<p><span class="chinese">难</span> nán — трудный</p>
+<p><span class="chinese">累</span> lèi — уставший</p>
+</div>
+</div>
+
+<div class="task">
+<h3>Задание 2. Соедини слово и перевод</h3>
+<p class="small">Выбери перевод для каждого китайского слова.</p>
+
+<div class="question">
+<label>1. 认真</label>
+<select data-answer="внимательно; серьёзно">
+<option value="">Выбери перевод</option>
+<option>здоровье</option>
+<option>внимательно; серьёзно</option>
+<option>планировать</option>
+<option>наконец</option>
+</select>
+</div>
+
+<div class="question">
+<label>2. 计划</label>
+<select data-answer="планировать">
+<option value="">Выбери перевод</option>
+<option>здоровье</option>
+<option>внимательно; серьёзно</option>
+<option>планировать</option>
+<option>наконец</option>
+</select>
+</div>
+
+<div class="question">
+<label>3. 终于</label>
+<select data-answer="наконец">
+<option value="">Выбери перевод</option>
+<option>здоровье</option>
+<option>внимательно; серьёзно</option>
+<option>планировать</option>
+<option>наконец</option>
+</select>
+</div>
+
+<div class="question">
+<label>4. 身体</label>
+<select data-answer="здоровье">
+<option value="">Выбери перевод</option>
+<option>здоровье</option>
+<option>внимательно; серьёзно</option>
+<option>планировать</option>
+<option>наконец</option>
+</select>
+</div>
+
+<button onclick="checkSelectTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+</section>
+
+<!-- 3. GRAMMAR -->
+<section id="grammar">
+<h2>3. Грамматика — 语法复习</h2>
+<p>Повтори конструкции и обрати внимание на порядок слов.</p>
+
+<div class="card-grid">
+<div class="card grammar-card">
+<h3>1. 正在 + глагол</h3>
+<p>Действие происходит прямо сейчас.</p>
+<div class="example">
+<p class="chinese">我正在做作业。</p>
+<p class="ru">Я сейчас делаю домашнее задание.</p>
+</div>
+<p class="chinese">他正在跑步。</p>
+<p class="ru">Он сейчас бегает.</p>
+</div>
+
+<div class="card grammar-card">
+<h3>2. Глагол + 了</h3>
+<p>Действие завершилось.</p>
+<div class="example">
+<p class="chinese">我做完作业了。</p>
+<p class="ru">Я закончил делать домашнее задание.</p>
+</div>
+<p class="chinese">她买了一本书。</p>
+<p class="ru">Она купила книгу.</p>
+</div>
+
+<div class="card grammar-card">
+<h3>3. 要……了</h3>
+<p>Что-то скоро произойдёт.</p>
+<div class="example">
+<p class="chinese">要考试了。</p>
+<p class="ru">Скоро экзамен.</p>
+</div>
+<p class="chinese">我快要下课了。</p>
+<p class="ru">У меня скоро закончатся занятия.</p>
+</div>
+
+<div class="card grammar-card">
+<h3>4. Тема + комментарий</h3>
+<p>Сначала называем тему, затем сообщаем о ней.</p>
+<div class="example">
+<p class="chinese">这本书，我已经看完了。</p>
+<p class="ru">Эту книгу я уже дочитал.</p>
+</div>
+</div>
+
+<div class="card grammar-card">
+<h3>5. Последовательность действий</h3>
+<p>先……然后…… — сначала…, потом…</p>
+<div class="example">
+<p class="chinese">我先学习，然后运动。</p>
+<p class="ru">Сначала я занимаюсь, потом тренируюсь.</p>
+</div>
+</div>
+
+<div class="card grammar-card">
+<h3>6. 了 — изменение ситуации</h3>
+<p>Показывает новое состояние или изменение.</p>
+<div class="example">
+<p class="chinese">天气热了。</p>
+<p class="ru">Погода стала жаркой.</p>
+</div>
+<p class="chinese">我现在不累了。</p>
+<p class="ru">Теперь я больше не устал.</p>
+</div>
+
+<div class="card grammar-card">
+<h3>7. Глагол + 得 + описание</h3>
+<p>得 вводит описание того, как выполняется действие.</p>
+<div class="example">
+<p class="chinese">他跑得很快。</p>
+<p class="ru">Он бегает очень быстро.</p>
+</div>
+<p class="chinese">她汉语说得很好。</p>
+<p class="ru">Она очень хорошо говорит по-китайски.</p>
+</div>
+
+<div class="card grammar-card">
+<h3>8. Повтор прилагательных</h3>
+<p>Повтор часто делает описание более выразительным или мягким.</p>
+<div class="example">
+<p class="chinese">房间干干净净的。</p>
+<p class="ru">Комната чистенькая.</p>
+</div>
+<p class="chinese">我们高高兴兴地回家。</p>
+<p class="ru">Мы радостно возвращаемся домой.</p>
+</div>
+
+<div class="card grammar-card">
+<h3>9. 一点儿也不 + прилагательное</h3>
+<p>Совсем не…, нисколько не…</p>
+<div class="example">
+<p class="chinese">今天一点儿也不冷。</p>
+<p class="ru">Сегодня совсем не холодно.</p>
+</div>
+<p class="chinese">我一点儿也不累。</p>
+<p class="ru">Я совсем не устал.</p>
+</div>
+
+<div class="card grammar-card">
+<h3>10. 有 и 是</h3>
+<p><b>有</b> — иметь, где-то есть; <b>是</b> — быть, являться.</p>
+<div class="example">
+<p class="chinese">我有一个计划。</p>
+<p class="ru">У меня есть план.</p>
+</div>
+<p class="chinese">他是学生。</p>
+<p class="ru">Он студент.</p>
+</div>
+
+<div class="card grammar-card">
+<h3>11. 以前、以后、的时候</h3>
+<p>以前 — раньше; 以后 — после, потом; 的时候 — когда.</p>
+<div class="example">
+<p class="chinese">吃饭的时候，我不看手机。</p>
+<p class="ru">Когда я ем, я не смотрю в телефон.</p>
+</div>
+<p class="chinese">运动以后，我喜欢洗澡。</p>
+<p class="ru">После тренировки я люблю принимать душ.</p>
+</div>
+</div>
+
+<div class="task">
+<h3>Задание 3. Выбери правильную конструкцию</h3>
+
+<div class="question" data-correct="b">
+<p>1. Он очень быстро бегает.</p>
+<label class="option"><input type="radio" name="g1" value="a">他很快跑。</label>
+<label class="option"><input type="radio" name="g1" value="b">他跑得很快。</label>
+<label class="option"><input type="radio" name="g1" value="c">他得跑很快。</label>
+</div>
+
+<div class="question" data-correct="a">
+<p>2. Сегодня совсем не холодно.</p>
+<label class="option"><input type="radio" name="g2" value="a">今天一点儿也不冷。</label>
+<label class="option"><input type="radio" name="g2" value="b">今天不一点儿也冷。</label>
+<label class="option"><input type="radio" name="g2" value="c">今天冷得一点儿也不。</label>
+</div>
+
+<div class="question" data-correct="c">
+<p>3. Сначала я учусь, потом занимаюсь спортом.</p>
+<label class="option"><input type="radio" name="g3" value="a">然后我学习，先运动。</label>
+<label class="option"><input type="radio" name="g3" value="b">我先运动，然后学习。</label>
+<label class="option"><input type="radio" name="g3" value="c">我先学习，然后运动。</label>
+</div>
+
+<div class="question" data-correct="b">
+<p>4. Я сейчас делаю домашнее задание.</p>
+<label class="option"><input type="radio" name="g4" value="a">我正在了做作业。</label>
+<label class="option"><input type="radio" name="g4" value="b">我正在做作业。</label>
+<label class="option"><input type="radio" name="g4" value="c">我做正在作业。</label>
+</div>
+
+<div class="question" data-correct="a">
+<p>5. Комната чистенькая.</p>
+<label class="option"><input type="radio" name="g5" value="a">房间干干净净的。</label>
+<label class="option"><input type="radio" name="g5" value="b">房间净干净的。</label>
+<label class="option"><input type="radio" name="g5" value="c">房间很干净净。</label>
+</div>
+
+<button onclick="checkRadioTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+</section>
+
+<!-- 4. 得 -->
+<section id="de">
+<h2>4. Дополнительная практика: 得</h2>
+<p>Схема: <b>глагол + 得 + описание</b>.</p>
+
+<div class="example">
+<p class="chinese">他说汉语说得很清楚。</p>
+<p class="ru">Он говорит по-китайски очень понятно.</p>
+<p class="chinese">我今天起得很早。</p>
+<p class="ru">Сегодня я встал очень рано.</p>
+<p class="chinese">她跳舞跳得很好。</p>
+<p class="ru">Она очень хорошо танцует.</p>
+</div>
+
+<div class="task">
+<h3>Задание 4.1. Выбери правильный вариант</h3>
+
+<div class="question" data-correct="b">
+<p>1. Он говорит очень медленно.</p>
+<label class="option"><input type="radio" name="de1" value="a">他说很慢汉语。</label>
+<label class="option"><input type="radio" name="de1" value="b">他说汉语说得很慢。</label>
+<label class="option"><input type="radio" name="de1" value="c">他说得汉语很慢。</label>
+</div>
+
+<div class="question" data-correct="a">
+<p>2. Она хорошо поёт.</p>
+<label class="option"><input type="radio" name="de2" value="a">她唱歌唱得很好。</label>
+<label class="option"><input type="radio" name="de2" value="b">她得唱歌很好。</label>
+<label class="option"><input type="radio" name="de2" value="c">她很好唱歌得。</label>
+</div>
+
+<div class="question" data-correct="c">
+<p>3. Ты пишешь китайские иероглифы очень красиво.</p>
+<label class="option"><input type="radio" name="de3" value="a">你写汉字很漂亮得。</label>
+<label class="option"><input type="radio" name="de3" value="b">你得写汉字很漂亮。</label>
+<label class="option"><input type="radio" name="de3" value="c">你写汉字写得很漂亮。</label>
+</div>
+
+<div class="question" data-correct="b">
+<p>4. Я сегодня встал очень рано.</p>
+<label class="option"><input type="radio" name="de4" value="a">我很早得起床。</label>
+<label class="option"><input type="radio" name="de4" value="b">我今天起得很早。</label>
+<label class="option"><input type="radio" name="de4" value="c">我得今天起床很早。</label>
+</div>
+
+<button onclick="checkRadioTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+
+<div class="task">
+<h3>Задание 4.2. Собери предложение</h3>
+<p>Расположи слова в правильном порядке. Впиши всё предложение по-китайски.</p>
+
+<div class="question">
+<p>1. Он очень быстро бегает.</p>
+<p class="small">跑步 / 他 / 很快 / 跑得</p>
+<input type="text" data-answer="他跑步跑得很快|他跑得很快" placeholder="Введи предложение">
+</div>
+
+<div class="question">
+<p>2. Она очень хорошо готовит.</p>
+<p class="small">做饭 / 做得 / 她 / 很好</p>
+<input type="text" data-answer="她做饭做得很好|她做得很好" placeholder="Введи предложение">
+</div>
+
+<div class="question">
+<p>3. Он очень внимательно учится.</p>
+<p class="small">学习 / 他 / 很认真 / 学得</p>
+<input type="text" data-answer="他学习学得很认真|他学得很认真" placeholder="Введи предложение">
+</div>
+
+<button onclick="checkTextTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+
+<div class="task">
+<h3>Задание 4.3. Заполни пропуски</h3>
+<p>Используй слова: 很快、很好、很清楚、很认真。</p>
+
+<div class="question">
+<p>1. 他跑步跑得______。 (Он бегает быстро.)</p>
+<input type="text" data-answer="很快">
+</div>
+
+<div class="question">
+<p>2. 她汉语说得______。 (Она хорошо говорит по-китайски.)</p>
+<input type="text" data-answer="很好">
+</div>
+
+<div class="question">
+<p>3. 老师说得______，我们都听懂了。 (Учитель объяснил понятно, и мы все поняли.)</p>
+<input type="text" data-answer="很清楚">
+</div>
+
+<div class="question">
+<p>4. 他学习学得______。 (Он занимается старательно.)</p>
+<input type="text" data-answer="很认真">
+</div>
+
+<button onclick="checkTextTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+
+<div class="task">
+<h3>Задание 4.4. Исправь ошибки</h3>
+<p>Перепиши каждое предложение правильно.</p>
+
+<div class="question">
+<p>1. 他得跑步很快。</p>
+<input type="text" data-answer="他跑步跑得很快|他跑得很快" placeholder="Исправленное предложение">
+</div>
+
+<div class="question">
+<p>2. 她说得汉语很好。</p>
+<input type="text" data-answer="她汉语说得很好|她说汉语说得很好" placeholder="Исправленное предложение">
+</div>
+
+<div class="question">
+<p>3. 我写汉字得很漂亮。</p>
+<input type="text" data-answer="我写汉字写得很漂亮|我汉字写得很漂亮" placeholder="Исправленное предложение">
+</div>
+
+<button onclick="checkTextTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+
+<div class="task">
+<h3>Задание 4.5. Закончи предложения о себе</h3>
+<p>Напиши свои варианты. Здесь нет единственного правильного ответа.</p>
+
+<div class="question">
+<p>1. 我汉语说得……</p>
+<input type="text" placeholder="Например: 我汉语说得不太快。">
+</div>
+
+<div class="question">
+<p>2. 我做饭做得……</p>
+<input type="text" placeholder="Напиши свой вариант">
+</div>
+
+<div class="question">
+<p>3. 我学习学得……</p>
+<input type="text" placeholder="Напиши свой вариант">
+</div>
+
+<div class="question">
+<p>4. 我……做得很好。</p>
+<input type="text" placeholder="Напиши свой вариант">
+</div>
+</div>
+</section>
+
+<!-- 5. 一点儿也不 -->
+<section id="yidian">
+<h2>5. Дополнительная практика: 一点儿也不</h2>
+
+<div class="example">
+<p class="chinese">我一点儿也不累。</p>
+<p class="ru">Я совсем не устал.</p>
+<p class="chinese">这个问题一点儿也不难。</p>
+<p class="ru">Этот вопрос совсем не трудный.</p>
+<p class="chinese">他一点儿也不喜欢运动。</p>
+<p class="ru">Он совсем не любит спорт.</p>
+</div>
+
+<p><b>Схема:</b> подлежащее + 一点儿也不 + прилагательное / глагольная конструкция.</p>
+
+<div class="task">
+<h3>Задание 5.1. Выбери правильный вариант</h3>
+
+<div class="question" data-correct="c">
+<p>1. Эта книга совсем не интересная.</p>
+<label class="option"><input type="radio" name="yi1" value="a">这本书不一点儿也有意思。</label>
+<label class="option"><input type="radio" name="yi1" value="b">这本书一点儿也有意思不。</label>
+<label class="option"><input type="radio" name="yi1" value="c">这本书一点儿也没意思。</label>
+</div>
+
+<div class="question" data-correct="a">
+<p>2. Я совсем не голоден.</p>
+<label class="option"><input type="radio" name="yi2" value="a">我一点儿也不饿。</label>
+<label class="option"><input type="radio" name="yi2" value="b">我不饿一点儿也。</label>
+<label class="option"><input type="radio" name="yi2" value="c">我一点儿不也饿。</label>
+</div>
+
+<div class="question" data-correct="b">
+<p>3. Сегодня совсем не холодно.</p>
+<label class="option"><input type="radio" name="yi3" value="a">今天不冷一点儿也。</label>
+<label class="option"><input type="radio" name="yi3" value="b">今天一点儿也不冷。</label>
+<label class="option"><input type="radio" name="yi3" value="c">今天也一点儿不冷。</label>
+</div>
+
+<div class="question" data-correct="a">
+<p>4. Он совсем не хочет спать.</p>
+<label class="option"><input type="radio" name="yi4" value="a">他一点儿也不想睡觉。</label>
+<label class="option"><input type="radio" name="yi4" value="b">他不想一点儿也睡觉。</label>
+<label class="option"><input type="radio" name="yi4" value="c">他一点儿不也想睡觉。</label>
+</div>
+
+<button onclick="checkRadioTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+
+<div class="task">
+<h3>Задание 5.2. Переведи на китайский</h3>
+
+<div class="question">
+<p>1. Я совсем не устал.</p>
+<input type="text" data-answer="我一点儿也不累" placeholder="Китайский перевод">
+</div>
+
+<div class="question">
+<p>2. Этот вопрос совсем не трудный.</p>
+<input type="text" data-answer="这个问题一点儿也不难" placeholder="Китайский перевод">
+</div>
+
+<div class="question">
+<p>3. Я совсем не голоден.</p>
+<input type="text" data-answer="我一点儿也不饿" placeholder="Китайский перевод">
+</div>
+
+<div class="question">
+<p>4. Он совсем не любит бегать.</p>
+<input type="text" data-answer="他一点儿也不喜欢跑步" placeholder="Китайский перевод">
+</div>
+
+<button onclick="checkTextTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+
+<div class="task">
+<h3>Задание 5.3. Измени предложения</h3>
+<p>Передай значение «совсем не…» с помощью 一点儿也不.</p>
+
+<div class="question">
+<p>1. 我不累。</p>
+<input type="text" data-answer="我一点儿也不累">
+</div>
+
+<div class="question">
+<p>2. 今天不冷。</p>
+<input type="text" data-answer="今天一点儿也不冷">
+</div>
+
+<div class="question">
+<p>3. 这个练习不难。</p>
+<input type="text" data-answer="这个练习一点儿也不难">
+</div>
+
+<div class="question">
+<p>4. 我不饿。</p>
+<input type="text" data-answer="我一点儿也不饿">
+</div>
+
+<button onclick="checkTextTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+
+<div class="task">
+<h3>Задание 5.4. Ответь о себе</h3>
+<p>Закончи предложения. Можно написать правдивый ответ или придумать ситуацию.</p>
+
+<div class="question">
+<p>1. 我一点儿也不喜欢……</p>
+<input type="text" placeholder="Я совсем не люблю…">
+</div>
+
+<div class="question">
+<p>2. ……一点儿也不难。</p>
+<input type="text" placeholder="… совсем не трудно.">
+</div>
+
+<div class="question">
+<p>3. 今天我一点儿也不……</p>
+<input type="text" placeholder="Сегодня я совсем не…">
+</div>
+
+<div class="question">
+<p>4. 我觉得……一点儿也不……</p>
+<input type="text" placeholder="Я считаю, что… совсем не…">
+</div>
+</div>
+</section>
+
+<!-- 6. ADJECTIVE REDUPLICATION -->
+<section id="redup">
+<h2>6. Дополнительная практика: повтор прилагательных</h2>
+
+<p>Повтор прилагательных помогает сделать описание более выразительным, мягким или живым. Конкретная форма зависит от прилагательного и конструкции.</p>
+
+<div class="card-grid">
+<div class="card">
+<h3>Односложные прилагательные</h3>
+<p class="chinese">高 → 高高的</p>
+<p class="ru">высокий → высокий, стройный / высокий на вид</p>
+<p class="chinese">大 → 大大的</p>
+<p class="ru">большой → большой, крупный</p>
+<p class="chinese">慢 → 慢慢</p>
+<p class="ru">медленно → медленно, не спеша</p>
+</div>
+
+<div class="card">
+<h3>Двусложные прилагательные</h3>
+<p class="chinese">干净 → 干干净净</p>
+<p class="ru">чистый → чистенький, совершенно чистый</p>
+<p class="chinese">高兴 → 高高兴兴</p>
+<p class="ru">радостный → радостно, с радостью</p>
+<p class="chinese">清楚 → 清清楚楚</p>
+<p class="ru">ясный → совершенно ясно</p>
+</div>
+</div>
+
+<div class="example">
+<p class="chinese">她有一双大大的眼睛。</p>
+<p class="ru">У неё большие глаза.</p>
+<p class="chinese">房间收拾得干干净净。</p>
+<p class="ru">Комната убрана очень чисто.</p>
+<p class="chinese">孩子们高高兴兴地去学校。</p>
+<p class="ru">Дети радостно идут в школу.</p>
+<p class="small">Обрати внимание: не каждое прилагательное повторяется одинаково, а значение и естественность формы зависят от контекста.</p>
+</div>
+
+<div class="task">
+<h3>Задание 6.1. Выбери правильную форму</h3>
+
+<div class="question" data-correct="b">
+<p>1. Как обычно образуется повтор для 干净?</p>
+<label class="option"><input type="radio" name="rr1" value="a">干净干净</label>
+<label class="option"><input type="radio" name="rr1" value="b">干干净净</label>
+<label class="option"><input type="radio" name="rr1" value="c">干净净干</label>
+</div>
+
+<div class="question" data-correct="a">
+<p>2. Как сказать «большие глаза» выразительно?</p>
+<label class="option"><input type="radio" name="rr2" value="a">大大的眼睛</label>
+<label class="option"><input type="radio" name="rr2" value="b">大大眼睛大</label>
+<label class="option"><input type="radio" name="rr2" value="c">眼睛大大大</label>
+</div>
+
+<div class="question" data-correct="c">
+<p>3. Как выглядит повтор прилагательного 高兴?</p>
+<label class="option"><input type="radio" name="rr3" value="a">高兴高兴</label>
+<label class="option"><input type="radio" name="rr3" value="b">高高兴的</label>
+<label class="option"><input type="radio" name="rr3" value="c">高高兴兴</label>
+</div>
+
+<div class="question" data-correct="b">
+<p>4. Выбери естественное предложение.</p>
+<label class="option"><input type="radio" name="rr4" value="a">房间净干净。</label>
+<label class="option"><input type="radio" name="rr4" value="b">房间收拾得干干净净。</label>
+<label class="option"><input type="radio" name="rr4" value="c">房间干净净得。</label>
+</div>
+
+<button onclick="checkRadioTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+
+<div class="task">
+<h3>Задание 6.2. Заполни пропуски</h3>
+
+<div class="question">
+<p>1. 她有一双______的眼睛。 (большие глаза)</p>
+<input type="text" data-answer="大大">
+</div>
+
+<div class="question">
+<p>2. 房间收拾得______。 (очень чисто)</p>
+<input type="text" data-answer="干干净净">
+</div>
+
+<div class="question">
+<p>3. 孩子们______地回家了。 (радостно)</p>
+<input type="text" data-answer="高高兴兴">
+</div>
+
+<div class="question">
+<p>4. 请说得______一点儿。 (понятнее)</p>
+<input type="text" data-answer="清清楚楚">
+</div>
+
+<button onclick="checkTextTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+
+<div class="task">
+<h3>Задание 6.3. Преобразуй прилагательные</h3>
+<p>Запиши распространённую форму повтора.</p>
+
+<div class="question">
+<p>1. 干净 →</p>
+<input type="text" data-answer="干干净净">
+</div>
+
+<div class="question">
+<p>2. 高兴 →</p>
+<input type="text" data-answer="高高兴兴">
+</div>
+
+<div class="question">
+<p>3. 清楚 →</p>
+<input type="text" data-answer="清清楚楚">
+</div>
+
+<div class="question">
+<p>4. 大 →</p>
+<input type="text" data-answer="大大">
+</div>
+
+<button onclick="checkTextTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+
+<div class="task">
+<h3>Задание 6.4. Опиши человека или комнату</h3>
+<p>Составь 2–3 предложения. Используй хотя бы одну повторённую форму прилагательного.</p>
+
+<div class="example">
+<p class="chinese">我的房间干干净净的。</p>
+<p class="chinese">桌子上有一个大大的杯子。</p>
+</div>
+
+<textarea placeholder="Напиши свой текст по-китайски…"></textarea>
+</div>
+</section>
+
+<!-- 7. MIXED REVIEW -->
+<section id="review">
+<h2>7. Смешанное повторение — 综合练习</h2>
+
+<div class="task">
+<h3>Задание 7.1. Выбери подходящее слово</h3>
+
+<div class="question" data-correct="a">
+<p>1. 他汉语说______很好。</p>
+<label class="option"><input type="radio" name="mix1" value="a">得</label>
+<label class="option"><input type="radio" name="mix1" value="b">的</label>
+<label class="option"><input type="radio" name="mix1" value="c">地</label>
+</div>
+
+<div class="question" data-correct="c">
+<p>2. 今天______不冷，我们去散步吧。</p>
+<label class="option"><input type="radio" name="mix2" value="a">得一点儿</label>
+<label class="option"><input type="radio" name="mix2" value="b">也一点儿不</label>
+<label class="option"><input type="radio" name="mix2" value="c">一点儿也</label>
+</div>
+
+<div class="question" data-correct="b">
+<p>3. 房间收拾得______。</p>
+<label class="option"><input type="radio" name="mix3" value="a">干净干净</label>
+<label class="option"><input type="radio" name="mix3" value="b">干干净净</label>
+<label class="option"><input type="radio" name="mix3" value="c">净干净</label>
+</div>
+
+<div class="question" data-correct="a">
+<p>4. 我先做作业，______去运动。</p>
+<label class="option"><input type="radio" name="mix4" value="a">然后</label>
+<label class="option"><input type="radio" name="mix4" value="b">正在</label>
+<label class="option"><input type="radio" name="mix4" value="c">以前</label>
+</div>
+
+<div class="question" data-correct="c">
+<p>5. 我今天______不累。</p>
+<label class="option"><input type="radio" name="mix5" value="a">得很</label>
+<label class="option"><input type="radio" name="mix5" value="b">也得</label>
+<label class="option"><input type="radio" name="mix5" value="c">一点儿也</label>
+</div>
+
+<button onclick="checkRadioTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+
+<div class="task">
+<h3>Задание 7.2. Найди и исправь ошибку</h3>
+
+<div class="question">
+<p>1. 我说汉语得很好。</p>
+<input type="text" data-answer="我说汉语说得很好|我汉语说得很好">
+</div>
+
+<div class="question">
+<p>2. 今天不一点儿也热。</p>
+<input type="text" data-answer="今天一点儿也不热">
+</div>
+
+<div class="question">
+<p>3. 房间干净干净的。</p>
+<input type="text" data-answer="房间干干净净的">
+</div>
+
+<button onclick="checkTextTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+
+<div class="task">
+<h3>Задание 7.3. Мини-история</h3>
+<p>Напиши историю из 6–8 предложений о своём дне. Используй все три конструкции:</p>
+
+<div class="word-bank">
+<span class="tag">得</span>
+<span class="tag">一点儿也不</span>
+<span class="tag">Повтор прилагательного</span>
+<span class="tag">先……然后……</span>
+<span class="tag">以后</span>
+</div>
+
+<p>Можно рассказать, как ты учишься, занимаешься спортом, отдыхаешь и строишь планы.</p>
+<textarea id="miniStory" placeholder="Напиши 6–8 предложений по-китайски…"></textarea>
+<p class="small" id="miniStoryCount">Символов: 0</p>
+<button class="secondary" onclick="copyText('miniStory')">Скопировать текст</button>
+</div>
+</section>
+
+<!-- 8. TRANSLATION -->
+<section id="translation">
+<h2>8. Перевод с русского на китайский — 翻译</h2>
+<p>Постарайся использовать изученные грамматические конструкции.</p>
+
+<div class="task">
+<div class="question">
+<p>1. Он очень быстро бегает.</p>
+<input type="text" data-answer="他跑步跑得很快|他跑得很快" placeholder="Китайский перевод">
+</div>
+
+<div class="question">
+<p>2. Я совсем не устал.</p>
+<input type="text" data-answer="我一点儿也不累" placeholder="Китайский перевод">
+</div>
+
+<div class="question">
+<p>3. Комната очень чистая.</p>
+<input type="text" data-answer="房间干干净净的|房间很干净" placeholder="Китайский перевод">
+</div>
+
+<div class="question">
+<p>4. Сначала я делаю домашнее задание, потом занимаюсь спортом.</p>
+<input type="text" data-answer="我先做作业，然后运动|我先做作业，然后去运动" placeholder="Китайский перевод">
+</div>
+
+<div class="question">
+<p>5. Она очень хорошо говорит по-китайски.</p>
+<input type="text" data-answer="她汉语说得很好|她说汉语说得很好" placeholder="Китайский перевод">
+</div>
+
+<div class="question">
+<p>6. Этот вопрос совсем не трудный.</p>
+<input type="text" data-answer="这个问题一点儿也不难" placeholder="Китайский перевод">
+</div>
+
+<div class="question">
+<p>7. Дети радостно идут в школу.</p>
+<input type="text" data-answer="孩子们高高兴兴地去学校|孩子们高高兴兴地去上学" placeholder="Китайский перевод">
+</div>
+
+<div class="question">
+<p>8. После тренировки я люблю отдыхать.</p>
+<input type="text" data-answer="运动以后，我喜欢休息|运动以后我喜欢休息" placeholder="Китайский перевод">
+</div>
+
+<button onclick="checkTextTask(this)">Проверить</button>
+<div class="feedback"></div>
+<p class="small">Возможны и другие грамматически правильные варианты. Автоматическая проверка сравнивает ответы с указанными образцами.</p>
+</div>
+</section>
+
+<!-- 9. SPEAKING -->
+<section id="speaking">
+<h2>9. Говорение — 口语</h2>
+
+<div class="task">
+<h3>Задание 9.1. Расскажи о своём распорядке дня</h3>
+<p>Используй слова и конструкции:</p>
+<div class="word-bank">
+<span class="tag">每天</span>
+<span class="tag">先……然后……</span>
+<span class="tag">正在</span>
+<span class="tag">以后</span>
+<span class="tag">得</span>
+</div>
+<p>Подсказки:</p>
+<ul>
+<li>Во сколько ты встаёшь?</li>
+<li>Когда ты занимаешься или работаешь?</li>
+<li>Что ты делаешь после занятий?</li>
+<li>Как ты выполняешь свои задачи?</li>
+</ul>
+<textarea placeholder="Можно подготовить план ответа по-китайски…"></textarea>
+</div>
+
+<div class="task">
+<h3>Задание 9.2. Интервью в парах</h3>
+<p>Задавайте друг другу вопросы и отвечайте полными предложениями.</p>
+
+<div class="card-grid">
+<div class="card">
+<p class="chinese">你每天运动吗？</p>
+<p class="ru">Ты занимаешься спортом каждый день?</p>
+</div>
+<div class="card">
+<p class="chinese">你做什么运动做得最好？</p>
+<p class="ru">Какой вид спорта у тебя получается лучше всего?</p>
+</div>
+<div class="card">
+<p class="chinese">你觉得什么事情一点儿也不难？</p>
+<p class="ru">Что ты считаешь совсем не трудным?</p>
+</div>
+<div class="card">
+<p class="chinese">你以后有什么计划？</p>
+<p class="ru">Какие у тебя планы на будущее?</p>
+</div>
+<div class="card">
+<p class="chinese">你什么时候学习汉语？</p>
+<p class="ru">Когда ты занимаешься китайским?</p>
+</div>
+<div class="card">
+<p class="chinese">你的房间怎么样？</p>
+<p class="ru">Какая у тебя комната?</p>
+</div>
+</div>
+</div>
+
+<div class="task">
+<h3>Задание 9.3. Продолжи фразы</h3>
+<p>Закончи фразы устно, а затем используй их в небольшом рассказе.</p>
+<ul>
+<li>我学习汉语学得……</li>
+<li>我一点儿也不喜欢……</li>
+<li>我的房间……</li>
+<li>我先……然后……</li>
+<li>运动以后，我……</li>
+<li>以后我打算……</li>
+</ul>
+</div>
+</section>
+
+<!-- 10. HSK2 READING -->
+<section id="reading2">
+<h2>10. Чтение HSK 2 — 阅读</h2>
+
+<div class="card">
+<h3>王明的生活 — Жизнь Ван Мина</h3>
+
+<p class="chinese">
+王明每天七点起床。吃早饭以后，他去学校学习汉语。
+他学习很认真，汉语说得越来越好。
+下午下课以后，他常常和朋友一起打篮球。
+王明打篮球打得很快，也很喜欢运动。
+晚上他先做作业，然后看一会儿书。
+他觉得学习汉语一点儿也不无聊，因为他每天都能学到新东西。
+周末，他有时候和朋友去公园散步。
+</p>
+
+<p class="ru small">Прочитай текст и ответь на вопросы.</p>
+</div>
+
+<div class="task">
+<div class="question" data-correct="b">
+<p>1. 王明几点起床？</p>
+<label class="option"><input type="radio" name="h2a" value="a">八点</label>
+<label class="option"><input type="radio" name="h2a" value="b">七点</label>
+<label class="option"><input type="radio" name="h2a" value="c">九点</label>
+</div>
+
+<div class="question" data-correct="a">
+<p>2. 王明下午常常做什么？</p>
+<label class="option"><input type="radio" name="h2b" value="a">和朋友打篮球</label>
+<label class="option"><input type="radio" name="h2b" value="b">在家睡觉</label>
+<label class="option"><input type="radio" name="h2b" value="c">去商店买东西</label>
+</div>
+
+<div class="question" data-correct="c">
+<p>3. 王明觉得学习汉语怎么样？</p>
+<label class="option"><input type="radio" name="h2c" value="a">一点儿也不喜欢</label>
+<label class="option"><input type="radio" name="h2c" value="b">非常难，不想学</label>
+<label class="option"><input type="radio" name="h2c" value="c">不无聊，每天都能学到新东西</label>
+</div>
+
+<div class="question" data-correct="b">
+<p>4. 他晚上先做什么？</p>
+<label class="option"><input type="radio" name="h2d" value="a">看书</label>
+<label class="option"><input type="radio" name="h2d" value="b">做作业</label>
+<label class="option"><input type="radio" name="h2d" value="c">打篮球</label>
+</div>
+
+<button onclick="checkRadioTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+
+<div class="task">
+<h3>Задание 10.2. Ответь по-китайски</h3>
+
+<div class="question">
+<p>1. 王明每天几点起床？</p>
+<input type="text" placeholder="Ответ по-китайски">
+</div>
+
+<div class="question">
+<p>2. 王明学习汉语学得怎么样？</p>
+<input type="text" placeholder="Ответ по-китайски">
+</div>
+
+<div class="question">
+<p>3. 周末他有时候做什么？</p>
+<input type="text" placeholder="Ответ по-китайски">
+</div>
+</div>
+</section>
+
+<!-- 11. HSK3 READING -->
+<section id="reading3">
+<h2>11. Чтение HSK 3 — 阅读</h2>
+
+<div class="card">
+<h3>李娜的新计划 — Новый план Ли На</h3>
+
+<p class="chinese">
+李娜以前不太喜欢运动。她每天学习和工作很忙，回家以后常常觉得很累。
+她觉得自己没有时间锻炼身体，而且跑步跑得也不快。
+上个月，她决定改变自己的生活。
+现在，她每天早上起床以后先跑步二十分钟，然后吃早饭。
+开始的时候，她觉得有一点儿难，但是她没有放弃。
+现在她跑步跑得越来越快，身体也越来越好了。
+她的房间收拾得干干净净，桌子上还放着一本运动计划。
+李娜觉得运动一点儿也不无聊，因为她每天都能看到自己的进步。
+下个月，她打算和朋友一起去游泳。
+</p>
+
+<p class="small">Прочитай текст. Обрати внимание на 得、以前、以后、的时候 и повтор прилагательных.</p>
+</div>
+
+<div class="task">
+<h3>Задание 11.1. Выбери правильный ответ</h3>
+
+<div class="question" data-correct="a">
+<p>1. 李娜以前为什么不常常运动？</p>
+<label class="option"><input type="radio" name="h3a" value="a">她很忙，常常觉得累。</label>
+<label class="option"><input type="radio" name="h3a" value="b">她不认识朋友。</label>
+<label class="option"><input type="radio" name="h3a" value="c">她没有运动鞋。</label>
+</div>
+
+<div class="question" data-correct="c">
+<p>2. 她现在早上先做什么？</p>
+<label class="option"><input type="radio" name="h3b" value="a">吃早饭</label>
+<label class="option"><input type="radio" name="h3b" value="b">去游泳</label>
+<label class="option"><input type="radio" name="h3b" value="c">跑步</label>
+</div>
+
+<div class="question" data-correct="b">
+<p>3. 她现在跑步跑得怎么样？</p>
+<label class="option"><input type="radio" name="h3c" value="a">比以前慢了</label>
+<label class="option"><input type="radio" name="h3c" value="b">越来越快</label>
+<label class="option"><input type="radio" name="h3c" value="c">一点儿也不快</label>
+</div>
+
+<div class="question" data-correct="a">
+<p>4. 李娜下个月打算做什么？</p>
+<label class="option"><input type="radio" name="h3d" value="a">和朋友一起游泳</label>
+<label class="option"><input type="radio" name="h3d" value="b">停止运动</label>
+<label class="option"><input type="radio" name="h3d" value="c">每天在家看电视</label>
+</div>
+
+<button onclick="checkRadioTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+
+<div class="task">
+<h3>Задание 11.2. Ответь на вопросы по-китайски</h3>
+
+<div class="question">
+<p>1. 李娜以前为什么不太喜欢运动？</p>
+<textarea placeholder="Ответ по-китайски"></textarea>
+</div>
+
+<div class="question">
+<p>2. 她什么时候跑步？</p>
+<textarea placeholder="Ответ по-китайски"></textarea>
+</div>
+
+<div class="question">
+<p>3. 她觉得运动怎么样？为什么？</p>
+<textarea placeholder="Ответ по-китайски"></textarea>
+</div>
+
+<div class="question">
+<p>4. 你觉得李娜的计划怎么样？你会做类似的计划吗？</p>
+<textarea placeholder="Ответ по-китайски"></textarea>
+</div>
+</div>
+</section>
+
+<!-- 12. WRITING -->
+<section id="writing">
+<h2>12. Письмо — 写作</h2>
+
+<div class="task">
+<h3>Задание 12.1. HSK 2: составь предложения</h3>
+<p>Составь предложения из слов. Введи иероглифы в правильном порядке.</p>
+
+<div class="question">
+<p>1. 每天 / 我 / 学习 / 汉语</p>
+<input type="text" data-answer="我每天学习汉语|我每天学习汉语。">
+</div>
+
+<div class="question">
+<p>2. 然后 / 我 / 运动 / 先 / 做作业</p>
+<input type="text" data-answer="我先做作业，然后运动|我先做作业，然后去运动">
+</div>
+
+<div class="question">
+<p>3. 很快 / 跑步 / 他 / 跑得</p>
+<input type="text" data-answer="他跑步跑得很快|他跑得很快">
+</div>
+
+<div class="question">
+<p>4. 一点儿也不 / 今天 / 冷</p>
+<input type="text" data-answer="今天一点儿也不冷">
+</div>
+
+<div class="question">
+<p>5. 干干净净 / 房间 / 的</p>
+<input type="text" data-answer="房间干干净净的">
+</div>
+
+<button onclick="checkTextTask(this)">Проверить</button>
+<div class="feedback"></div>
+</div>
+
+<div class="task">
+<h3>Задание 12.2. HSK 3: напиши небольшой текст</h3>
+<p><b>Тема: 我的学习、运动和生活计划 — Мои планы на учёбу, спорт и жизнь.</b></p>
+<p>Напиши текст примерно на 80–100 китайских иероглифов. Постарайся использовать:</p>
+
+<div class="word-bank">
+<span class="tag">以前</span>
+<span class="tag">以后</span>
+<span class="tag">的时候</span>
+<span class="tag">得</span>
+<span class="tag">一点儿也不</span>
+<span class="tag">干干净净 / 高高兴兴</span>
+<span class="tag">先……然后……</span>
+</div>
+
+<textarea id="writingText" placeholder="写一写你的学习、运动和生活计划……"></textarea>
+<p class="small" id="writingCount">Символов: 0</p>
+<button class="secondary" onclick="copyText('writingText')">Скопировать текст</button>
+</div>
+
+<div class="task">
+<h3>Задание 12.3. Самопроверка</h3>
+<p>Перед завершением работы отметь, что получилось использовать в своём тексте.</p>
+
+<label class="option"><input type="checkbox"> Я использовал 得 для описания действия.</label>
+<label class="option"><input type="checkbox"> Я использовал 一点儿也不.</label>
+<label class="option"><input type="checkbox"> Я использовал повтор прилагательного.</label>
+<label class="option"><input type="checkbox"> Я использовал 先……然后…….</label>
+<label class="option"><input type="checkbox"> Я написал о своих планах на будущее.</label>
+<label class="option"><input type="checkbox"> Я проверил порядок слов.</label>
+</div>
+</section>
+
+<div class="score">
+<div>
+<strong>Результаты автоматической проверки</strong>
+<div class="small" id="totalScore">Проверено заданий: 0 · Правильных ответов: 0</div>
+</div>
+<button onclick="resetChecks()">Сбросить результаты</button>
+</div>
+
+</main>
+
+<footer>
+学习、运动和生活计划 · Повторение китайского языка
+</footer>
+
+<script>
+/* Универсальная проверка вопросов с вариантами ответа */
+let checkedCount = 0;
+let correctCount = 0;
+
+function normalizeText(value) {
+return value
+.trim()
+.replace(/[，。！？、；：,.!?;:]/g, "")
+.replace(/\s+/g, "");
+}
+
+function updateScore() {
+document.getElementById("totalScore").textContent =
+"Проверено заданий: " + checkedCount +
+" · Правильных ответов: " + correctCount;
+}
+
+function setFeedback(element, message, type) {
+element.textContent = message;
+element.className = "feedback " + type;
+}
+
+function checkRadioTask(button) {
+const task = button.closest(".task");
+const questions = task.querySelectorAll(".question[data-correct]");
+let correct = 0;
+let answered = 0;
+
+questions.forEach(question => {
+const selected = question.querySelector('input[type="radio"]:checked');
+if (!selected) return;
+
+answered++;
+if (selected.value === question.dataset.correct) {
+correct++;
+}
+});
+
+if (answered === 0) {
+setFeedback(task.querySelector(".feedback"),
+"Сначала выбери ответы.", "neutral");
+return;
+}
+
+checkedCount += answered;
+correctCount += correct;
+updateScore();
+
+setFeedback(
+task.querySelector(".feedback"),
+"Результат: " + correct + " из " + questions.length +
+". Проверено ответов: " + answered + ".",
+correct === questions.length ? "success" : "neutral"
+);
+}
+
+function checkSelectTask(button) {
+const task = button.closest(".task");
+const fields = task.querySelectorAll("select[data-answer]");
+let correct = 0;
+let answered = 0;
+
+fields.forEach(field => {
+if (!field.value) return;
+answered++;
+if (normalizeText(field.value) === normalizeText(field.dataset.answer)) {
+correct++;
+}
+});
+
+if (answered === 0) {
+setFeedback(task.querySelector(".feedback"),
+"Сначала выбери ответы.", "neutral");
+return;
+}
+
+checkedCount += answered;
+correctCount += correct;
+updateScore();
+
+setFeedback(
+task.querySelector(".feedback"),
+"Результат: " + correct + " из " + fields.length + ".",
+correct === fields.length ? "success" : "neutral"
+);
+}
+
+function checkTextTask(button) {
+const task = button.closest(".task");
+const fields = task.querySelectorAll("input[data-answer]");
+let correct = 0;
+let answered = 0;
+
+fields.forEach(field => {
+const userAnswer = normalizeText(field.value);
+if (!userAnswer) return;
+
+answered++;
+const acceptedAnswers = field.dataset.answer
+.split("|")
+.map(answer => normalizeText(answer));
+
+if (acceptedAnswers.includes(userAnswer)) {
+correct++;
+}
+});
+
+if (answered === 0) {
+setFeedback(task.querySelector(".feedback"),
+"Сначала впиши ответы.", "neutral");
+return;
+}
+
+checkedCount += answered;
+correctCount += correct;
+updateScore();
+
+setFeedback(
+task.querySelector(".feedback"),
+"Результат: " + correct + " из " + fields.length +
+". Если предложение грамматически верное, но не засчитано, сравни его с образцом: автоматическая проверка принимает только указанные варианты.",
+correct === fields.length ? "success" : "neutral"
+);
+}
+
+/* Проверка длины иероглифического текста */
+function updateCharacterCount(textareaId, counterId) {
+const textarea = document.getElementById(textareaId);
+const counter = document.getElementById(counterId);
+if (!textarea || !counter) return;
+
+const count = [...textarea.value.replace(/\s/g, "")].length;
+counter.textContent = "Символов без пробелов: " + count;
+}
+
+document.getElementById("miniStory").addEventListener("input", () => {
+updateCharacterCount("miniStory", "miniStoryCount");
+});
+
+document.getElementById("writingText").addEventListener("input", () => {
+updateCharacterCount("writingText", "writingCount");
+});
+
+/* Копирование текста */
+function copyText(elementId) {
+const field = document.getElementById(elementId);
+field.focus();
+field.select();
+
+try {
+const successful = document.execCommand("copy");
+if (successful) {
+alert("Текст скопирован.");
+} else {
+alert("Выдели текст и скопируй его вручную.");
+}
+} catch (error) {
+alert("Выдели текст и скопируй его вручную.");
+}
+}
+
+/* Сброс ответов и результатов */
+function resetChecks() {
+if (!confirm("Сбросить выбранные ответы и результаты проверки?")) return;
+
+document.querySelectorAll('input[type="radio"]').forEach(input => {
+input.checked = false;
+});
+
+document.querySelectorAll('input[data-answer]').forEach(input => {
+input.value = "";
+});
+
+document.querySelectorAll("select[data-answer]").forEach(select => {
+select.selectedIndex = 0;
+});
+
+document.querySelectorAll(".feedback").forEach(feedback => {
+feedback.textContent = "";
+feedback.className = "feedback";
+});
+
+checkedCount = 0;
+correctCount = 0;
+updateScore();
+}
+</script>
+
+</body>
+</html>
